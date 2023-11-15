@@ -8,27 +8,30 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private Transform _firePoint;
 
-    public EventHandler<ShootingArgs> OnShoot;
+    [SerializeField] private Animator _animator;
 
-    public class ShootingArgs : EventArgs
-    {
-        
-    }
-        
+    [SerializeField] private WeaponData _data;
+
+    private int fire;
         
     // Start is called before the first frame update
     void Start()
     {
-     
+        fire = Animator.StringToHash("fire");
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleWeaponAimPos();
+        HandleFire();
     }
 
 
+    public void SetWeaponData()
+    {
+        
+    }
 
 
     private void HandleWeaponAimPos()
@@ -47,6 +50,20 @@ public class Weapon : MonoBehaviour
         }
         
         transform.eulerAngles = new Vector3(0, 0, angle);
+    }
+
+    private void HandleFire()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var shootingDirection = new Vector2(mousePos.x, mousePos.y) -
+                                    new Vector2(transform.position.x, transform.position.y);
+            
+            StartCoroutine(CameraController.Instance.Shake(0.05f, 0.05f, -shootingDirection, 0.25f));
+            
+            _animator.SetTrigger(fire);
+        }
     }
     
     

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
@@ -15,8 +16,15 @@ public class PlayerController : MonoSingleton<PlayerController>
 
 
     private int _walk;
-
     private int _jump;
+
+    public event EventHandler OnFire;
+
+    public class FireArgs : EventArgs
+    {
+        
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -54,18 +62,6 @@ public class PlayerController : MonoSingleton<PlayerController>
 
         #endregion
         
-        
-        #region Attack
-        if (Input.GetMouseButtonDown(0))
-        {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var shootingDirection = new Vector2(mousePos.x, mousePos.y) -
-                                    new Vector2(transform.position.x, transform.position.y);
-            
-            StartCoroutine(CameraController.Instance.Shake(0.05f, 0.05f, -shootingDirection, 0.25f));
-        }
-        #endregion
-       
         
     }
 }

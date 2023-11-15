@@ -5,36 +5,28 @@
 using System;
 using UnityEngine;
 
-namespace DefaultNamespace
+
+public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+    private static T _instance;
+
+    public static T Instance
     {
-        private static T _instance;
+        get { return _instance; }
+        set { _instance = value; }
+    }
 
-        public static T Instance
+
+    protected virtual void Awake()
+    {
+        if (Instance != null)
         {
-            get
-            {
-                return _instance;
-            }
-            set
-            {
-                _instance = value;
-            }
+            DestroyImmediate(this);
         }
-
-
-        protected virtual void Awake()
+        else
         {
-            if (Instance != null)
-            {
-                DestroyImmediate(this);
-            }
-            else
-            {
-                Instance = this as T;
-                DontDestroyOnLoad(this);
-            }
+            Instance = this as T;
+            DontDestroyOnLoad(this);
         }
     }
 }
