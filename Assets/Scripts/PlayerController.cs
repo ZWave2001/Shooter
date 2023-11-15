@@ -47,21 +47,23 @@ public class PlayerController : MonoSingleton<PlayerController>
             _animator.SetBool(_walk, false);
         }
         
+        _rb.velocity = new Vector2(_direction.x * CharacterData.speed, _rb.velocity.y);
         
         
        
-        _rb.velocity = new Vector2(_direction.x * CharacterData.speed, _rb.velocity.y);
 
-
+        #endregion
+        
+        
+        #region Attack
         if (Input.GetMouseButtonDown(0))
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var shootingDirection = new Vector2(mousePos.x, mousePos.y) -
-                            new Vector2(transform.position.x, transform.position.y);
+                                    new Vector2(transform.position.x, transform.position.y);
             
-            StartCoroutine(CameraController.Instance.Shake(0.1f, 0.1f, -shootingDirection, 0.25f));
+            StartCoroutine(CameraController.Instance.Shake(0.05f, 0.05f, -shootingDirection, 0.25f));
         }
-
         #endregion
        
         
