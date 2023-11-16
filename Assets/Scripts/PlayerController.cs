@@ -119,7 +119,7 @@ public class PlayerController : MonoSingleton<PlayerController>
             pressingTime += Time.deltaTime;
             if (onRelease)
             {
-                Debug.Log("短按");
+                // Debug.Log("短按");
                 Jump(CharacterData.shortJumpHeight);
                 yield break;
             }
@@ -128,7 +128,7 @@ public class PlayerController : MonoSingleton<PlayerController>
 
         if (!onRelease)
         {
-            Debug.Log("长按");
+            // Debug.Log("长按");
             Jump(CharacterData.longJumpHeight);
         }
     }

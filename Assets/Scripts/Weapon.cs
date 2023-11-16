@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField]
-    private Transform _firePoint;
-    [SerializeField]
-    private Transform _shellPoint;
+    [SerializeField] private Transform _firePoint;
+    [SerializeField] private Transform _shellPoint;
 
 
     [SerializeField] private Animator _animator;
@@ -16,9 +14,8 @@ public class Weapon : MonoBehaviour
 
     private int _fireAnim;
     private float _readyForNextShoot;
-        
-    
-        
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,8 +51,8 @@ public class Weapon : MonoBehaviour
             PlayerController.Instance.ChangeModelRotation(new Vector3(0, 180, 0));
             transform.localScale = new Vector3(tempScale.x, -Mathf.Abs(tempScale.y), tempScale.z);
         }
-        
-        
+
+
         transform.eulerAngles = new Vector3(0, 0, angle);
 
 
@@ -67,15 +64,13 @@ public class Weapon : MonoBehaviour
                 Shoot(shootingDirection);
             }
         }
-        
     }
 
 
     private void Shoot(Vector2 shootingDirection)
     {
-      
-        StartCoroutine(CameraController.Instance.
-            Shake(0.1f * _weaponData.ShakeMultiple, 0.1f * _weaponData.ShakeMultiple, -shootingDirection, 2f * _weaponData.ShakeMultiple));
+        StartCoroutine(CameraController.Instance.Shake(0.1f * _weaponData.ShakeMultiple,
+            0.1f * _weaponData.ShakeMultiple, -shootingDirection, 2f * _weaponData.ShakeMultiple));
         _animator.SetTrigger(_fireAnim);
 
         var obj1 = Resources.Load<GameObject>($"Entitys/Bullets/{_weaponData.BulletType.ToString()}");
@@ -86,9 +81,8 @@ public class Weapon : MonoBehaviour
         var obj2 = Resources.Load<GameObject>(
             $"Entitys/Shells/{_weaponData.BulletType.ToString().Replace("Bullet", "Shell")}");
         GameObject shellIns = Instantiate(obj2, _shellPoint.position, _shellPoint.rotation);
-        shellIns.GetComponent<Rigidbody2D>().AddForce(new Vector2(shootingDirection.x, 2));
-        Destroy(shellIns, 0.5f);
+        shellIns.GetComponentInChildren<Rigidbody2D>()
+            .AddForce(new Vector2(shootingDirection.x > 0 ? -1 : 1, 1) * 200);
+        Destroy(shellIns, 2f);
     }
-    
-    
 }
