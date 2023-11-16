@@ -25,6 +25,9 @@ namespace DefaultNamespace
         
         public float delayingDuration;
 
+
+        public Action OnShortPress;
+        public Action OnLongPress;
         
         private void Awake()
         {
